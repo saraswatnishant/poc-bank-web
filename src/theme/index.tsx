@@ -24,6 +24,15 @@ const useStyles = makeStyles()((theme) => {
       marginLeft: 0, // Set margin to 0
       color: theme.palette.error.main,
     },
+    dataGrid: {
+      "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
+        outline: "none !important",
+      },
+      "& .MuiDataGrid-columnHeader:focus-within, & .MuiDataGrid-columnHeader:focus":
+        {
+          outline: "none !important",
+        },
+    },
   };
 });
 

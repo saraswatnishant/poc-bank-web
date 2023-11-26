@@ -10,6 +10,7 @@ import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import PartialPayment from "../components/PartialPayment";
 import LoanSummaryDialog from "../components/LoanSummaryDialog";
 import LoanSettlementDialog from "../components/LoanSettlementDialog";
+import { useStyles } from '../theme/index';
 const ManageLoans = ({
   loanList = [],
   madePartialPayment,
@@ -25,6 +26,8 @@ const ManageLoans = ({
   const [selectedLoan, setSelectedLoan] = useState<LoanRequestType | null>(
     null
   );
+
+  const { classes } = useStyles();
 
   const handlePartialPaymentSubmit = async ({
     payment,
@@ -63,7 +66,7 @@ const ManageLoans = ({
     const payload = {
       ...selectedLoan,
       paymentMade: selectedLoan.totalAmount,
-      status: "CLOSED"
+      status: "CLOSED",
     };
     const success = await madePartialPayment(payload as LoanRequestType);
 
@@ -152,7 +155,12 @@ const ManageLoans = ({
       </Typography>
       <DataGrid
         autoHeight
-        sx={{ height: "100%", overflowX: "scroll", mt: "8px" }}
+        sx={{
+          height: "100%",
+          overflowX: "scroll",
+          mt: "8px"
+        }}
+        className={classes.dataGrid}
         rows={loanList}
         columns={[...columns, { ...actionColumn }]}
         rowSelection={false}

@@ -41,7 +41,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <BrowserRouter basename="/">
             <CssBaseline />
-            <Container maxWidth={"xl"}>
+            <Container>
               <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={alertContent.visible}

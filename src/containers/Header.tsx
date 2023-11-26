@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <AppBar position="sticky">
-      <Container maxWidth={"xl"}>
+      <Container>
         <Box
           sx={{
             pt: "16px",
