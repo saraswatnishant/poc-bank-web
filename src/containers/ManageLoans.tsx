@@ -204,7 +204,7 @@ const ManageLoans = ({
               }}
               startIcon={<TaskIcon />}
             >
-              Approve
+              Approve/Reject
             </Button>
           )}
         </Stack>
@@ -216,9 +216,8 @@ const ManageLoans = ({
     <Box sx={{ mt: "16px" }}>
       <Typography variant="h6">Manage Loans</Typography>
       <Typography>
-        Effortlessly track and manage all your loans in one place with the
-        'Manage Loan' tab. View loan details, check statuses, and choose between
-        full or partial payments for ultimate financial control.
+        Manage all your loans under this tab with easy viewing of loan details
+        along with partial and full payment features.
       </Typography>
       <DataGrid
         loading={loading}
@@ -258,7 +257,7 @@ const ManageLoans = ({
       <AlertDialog
         open={showLoanApprovalDialog}
         title="Confirmation ?"
-        body="Are you sure you want to approve this loan request?        "
+        body="Please confirm Approval or Rejection of this loan?        "
         okButtonText="Approve"
         closeButtonText="Reject"
         handleClose={() => handleLoanApprovalSubmit("REJECTED")}

@@ -50,7 +50,7 @@ function App() {
               <UserContextProvider value={user}>
                 <AuthProvider>
                   <CssBaseline />
-                  <Container>
+                  <Container maxWidth="xl" sx={{ mb: 15 }}>
                     <Snackbar
                       anchorOrigin={{ vertical: "top", horizontal: "right" }}
                       open={alertContent.visible}

@@ -65,25 +65,25 @@ const Dashboard = ({
           alignItems="center"
           alignSelf="flex-start"
         >
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <LoadWidgetSummary
               title="Total Loan Amount"
               total={loadWidgetMetrices.totalAmount}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <LoadWidgetSummary
               title="Total Loan Pending Amount"
               total={loadWidgetMetrices.totalPendingAmount}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <LoadWidgetSummary
               title="Total Active Loans"
               total={loadWidgetMetrices.totalActiveLoans}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <LoadWidgetSummary
               title="Loans Pending For Approval"
               total={loadWidgetMetrices.totalPendingLoans}

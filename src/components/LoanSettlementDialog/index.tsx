@@ -5,6 +5,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { LoanSettlementDialogType } from "../../utility/types";
@@ -28,10 +29,10 @@ const LoanSettlementDialog = ({
             settlement. Kindly click on “CONFIRM’ if you wish to proceed for
             final settlement
             {selectedLoan && (
-              <p>
+              <Typography variant="subtitle2" sx={{ pt: 1, color: "#000000" }}>
                 Balance Amount to be paid:
                 {selectedLoan?.totalAmount - selectedLoan?.paymentMade}
-              </p>
+              </Typography>
             )}
           </DialogContentText>
         </DialogContent>
