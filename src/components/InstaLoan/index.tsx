@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Card,
   CardActions,
@@ -8,6 +9,8 @@ import {
 } from "@mui/material";
 
 import { InstaLoanCardType } from "../../utility/types";
+import { UserContext } from "../../utility/UserContext";
+
 const InstaLoanCard = ({
   image,
   heading,
@@ -15,6 +18,7 @@ const InstaLoanCard = ({
   buttonText,
   handleApplyLoan,
 }: InstaLoanCardType) => {
+  const { role } = useContext(UserContext);
   return (
     <Card
       sx={{
@@ -37,15 +41,17 @@ const InstaLoanCard = ({
           {subheading}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end" }}>
-        <Button
-          onClick={() => handleApplyLoan(true)}
-          variant="contained"
-          size="small"
-        >
-          {buttonText}
-        </Button>
-      </CardActions>
+      {role === "Applicant" && (
+        <CardActions sx={{ justifyContent: "flex-end" }}>
+          <Button
+            onClick={() => handleApplyLoan(true)}
+            variant="contained"
+            size="small"
+          >
+            {buttonText}
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 };
