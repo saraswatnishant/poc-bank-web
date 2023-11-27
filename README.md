@@ -15,9 +15,16 @@ This application serves as a Proof of Concept (POC) for a comprehensive bank loa
   - Request a loan
   - Make loan payments
   - Settle outstanding loans
+  - View Loan List
+  - View Loan Details
+  - Dashboard With Loan Metrices
 
 - **Banker:**
   - Approve or Reject loan requests
+  - View Loan List
+  - View Loan Details
+  - Dashboard With Loan Metrices
+    
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
