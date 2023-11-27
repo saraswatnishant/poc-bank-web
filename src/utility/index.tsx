@@ -1,5 +1,5 @@
 import moment, { Moment } from "moment";
-import { LoanRequestType, FormInputTypes, LoanSummaryType, UserRole } from "./types";
+import { LoanRequestType, FormInputTypes, LoanSummaryType } from "./types";
 import "moment-precise-range-plugin";
 import {
   GridRenderCellParams,
@@ -104,19 +104,19 @@ export const manageLoanTableCols: GridColDef[] = [
     minWidth: 150,
   },
   {
-    field: "loanType",
-    headerName: "Loan Type",
-    headerAlign: "center",
-    align: "center",
-    minWidth: 100,
-    flex: 1,
-  },
-  {
     field: "amount",
     headerName: "Principal Amount",
     headerAlign: "center",
     align: "center",
     minWidth: 150,
+    flex: 1,
+  },
+  {
+    field: "totalAmount",
+    headerName: "Total Payback Amount",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 200,
     flex: 1,
   },
   {

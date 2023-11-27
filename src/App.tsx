@@ -15,6 +15,7 @@ import { LoanRequestType, AlertContentType, UserRole } from "./utility/types";
 import { UserContextProvider } from "./utility/UserContext";
 import { AuthProvider } from "./components/AuthProvider";
 import NoMatchFound from "./containers/NotFound";
+import ErrorBoundary from './containers/ErrorBoundry';
 const alertInitialState: AlertContentType = {
   type: "warning",
   message: "",
@@ -39,9 +40,10 @@ function App() {
   useEffect(() => {
     fetchLoanList();
   }, [fetchLoanList]);
-
+  
   return (
     <div className="App">
+      <ErrorBoundary>
       <BrowserRouter basename="/">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <ThemeProvider theme={theme}>
@@ -96,6 +98,7 @@ function App() {
           </ThemeProvider>
         </LocalizationProvider>
       </BrowserRouter>
+      </ErrorBoundary>
     </div>
   );
 }

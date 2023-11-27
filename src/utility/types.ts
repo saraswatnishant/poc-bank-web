@@ -106,6 +106,7 @@ export interface PartialPaymentType {
   onSubmit: (param: { payment: number | string}) => void;
   selectedLoan: LoanRequestType | null;
   loading: boolean;
+  form: UseFormReturn<any>
 }
 
 export interface LoanSummaryDialogType {

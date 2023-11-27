@@ -81,7 +81,7 @@ const LoanApplication = ({
       );
       const result = await requestLoan(payload);
       await fetchLoanList();
-      handleClose(false);
+      onClose();
       result
         ? setAlertContent({
             type: "success",

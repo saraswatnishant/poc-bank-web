@@ -19,6 +19,7 @@ import AlertDialog from "../components/AlertDialog";
 import { useStyles } from "../theme/index";
 import withPermissionGate from "../components/AuthProvider/withPermissionGate";
 import { UserContext } from "../utility/UserContext";
+import { useForm } from "react-hook-form";
 const ManageLoans = ({
   loanList = [],
   setAlertContent,
@@ -26,6 +27,15 @@ const ManageLoans = ({
   updateLoan,
   loading,
 }: ManageLoansPropsType) => {
+  const form = useForm({
+    mode: "all",
+    defaultValues: {
+      payment: "",
+    },
+  });
+
+  const { reset } = form;
+  const { classes } = useStyles();
   const { role } = useContext(UserContext);
   const [showLoanSummary, setShowLoanSummary] = useState(false);
   const [showLoanApprovalDialog, setShowLoanApprovalDialog] = useState(false);
@@ -36,8 +46,6 @@ const ManageLoans = ({
     null
   );
 
-  const { classes } = useStyles();
-
   const handlePartialPaymentSubmit = async ({
     payment,
   }: {
@@ -46,15 +54,19 @@ const ManageLoans = ({
     if (!selectedLoan) {
       return;
     }
+
     const payload = {
       ...selectedLoan,
       paymentMade: selectedLoan.paymentMade + Number(payment),
+      ...(selectedLoan.totalAmount <=
+        selectedLoan.paymentMade + Number(payment) && {
+        status: "CLOSED",
+      }),
     };
     const success = await updateLoan(payload as LoanRequestType);
 
     fetchLoanList();
-    setShowPartialPayment(false);
-    setSelectedLoan(null);
+    handlePartialPaymentClose();
     success
       ? setAlertContent({
           type: "success",
@@ -96,6 +108,7 @@ const ManageLoans = ({
   };
 
   const handlePartialPaymentClose = () => {
+    reset();
     setShowPartialPayment(false);
     setSelectedLoan(null);
   };
@@ -227,6 +240,7 @@ const ManageLoans = ({
         onClose={handlePartialPaymentClose}
         loading={loading}
         onSubmit={handlePartialPaymentSubmit}
+        form={form}
       />
       <LoanSummaryDialog
         showLoanSummary={showLoanSummary}

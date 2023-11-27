@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useForm, Controller } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useStyles } from "../../theme";
 import { PartialPaymentType } from "../../utility/types";
 
@@ -19,22 +19,20 @@ const PartialPayment = ({
   onClose,
   onSubmit,
   loading,
+  form,
 }: PartialPaymentType) => {
+  const { control, handleSubmit } = form;
   const { classes } = useStyles();
-  const { control, handleSubmit } = useForm({
-    mode: "all",
-    defaultValues: {
-      payment: "",
-    },
-  });
+
   let balanceAmount = 0;
 
   if (selectedLoan) {
     balanceAmount = selectedLoan?.totalAmount - selectedLoan?.paymentMade;
   }
+
   return (
     <>
-      <Dialog open={open} onClose={() => onClose()}>
+      <Dialog open={open} onClose={onClose}>
         <DialogTitle>Partial Loan Payment</DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
@@ -44,13 +42,13 @@ const PartialPayment = ({
             <Controller
               name="payment"
               control={control}
+              defaultValue=""
               rules={{
                 required: "This field is required",
                 validate: {
                   isNumber: (value: any) => !isNaN(value) || "Must be a number",
                   minValue: (value: any) =>
-                    parseFloat(value) >= 0 ||
-                    "Must be greater than or equal to 1000",
+                    parseFloat(value) > 0 || "Must be greater than zero.",
                   maxValue: (value: any) =>
                     parseFloat(value) <= balanceAmount ||
                     `Must be less than or equal to loan balance amount.`,
@@ -78,8 +76,10 @@ const PartialPayment = ({
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => onClose()}>Cancel</Button>
-            <LoadingButton type="submit" loading={loading} variant="contained">Confirm</LoadingButton>
+            <Button onClick={onClose}>Cancel</Button>
+            <LoadingButton type="submit" loading={loading} variant="contained">
+              Confirm
+            </LoadingButton>
           </DialogActions>
         </form>
       </Dialog>

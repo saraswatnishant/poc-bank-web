@@ -14,7 +14,7 @@ const LoanSettlementDialog = ({
   onClose,
   handleFullPaymentSubmit,
   selectedLoan,
-  loading
+  loading,
 }: LoanSettlementDialogType) => {
   return (
     <>
@@ -24,19 +24,27 @@ const LoanSettlementDialog = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            You have opted to pay the full amount of your loan towards
+            settlement. Kindly click on “CONFIRM’ if you wish to proceed for
+            final settlement
             {selectedLoan && (
               <p>
-                You are paying this muct amount:
+                Balance Amount to be paid:
                 {selectedLoan?.totalAmount - selectedLoan?.paymentMade}
               </p>
             )}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
-          <LoadingButton variant="contained" loading={loading} onClick={handleFullPaymentSubmit} autoFocus>
+          <Button variant="outlined" onClick={onClose}>
+            Cancel
+          </Button>
+          <LoadingButton
+            variant="contained"
+            loading={loading}
+            onClick={handleFullPaymentSubmit}
+            autoFocus
+          >
             Confirm
           </LoadingButton>
         </DialogActions>
