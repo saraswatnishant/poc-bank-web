@@ -46,9 +46,7 @@ const Header = () => {
               }}
             >
               <Avatar></Avatar>
-              <Typography variant="subtitle2">
-                Nishant ({role})
-              </Typography>
+              <Typography variant="subtitle2">Nishant ({role})</Typography>
             </Box>
           )}
         </Box>

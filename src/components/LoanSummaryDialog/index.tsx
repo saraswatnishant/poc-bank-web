@@ -6,14 +6,14 @@ import {
   DialogContentText,
   Button,
 } from "@mui/material";
-import LoanSummary from '../LoanSummary';
+import LoanSummary from "../LoanSummary";
 import { formatLoanSummaryData } from "../../utility";
-import { LoanSummaryDialogType } from '../../utility/types';
+import { LoanSummaryDialogType } from "../../utility/types";
 
 const LoanSummaryDialog = ({
-    showLoanSummary,
-    setShowLoanSummary,
-    selectedLoan
+  showLoanSummary,
+  setShowLoanSummary,
+  selectedLoan,
 }: LoanSummaryDialogType) => {
   return (
     <Dialog
@@ -35,10 +35,10 @@ const LoanSummaryDialog = ({
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-        <LoanSummary
-          showTitle={false}
-          fields={formatLoanSummaryData({ ...selectedLoan })}
-        />
+          <LoanSummary
+            showTitle={false}
+            fields={formatLoanSummaryData({ ...selectedLoan })}
+          />
         </DialogContentText>
       </DialogContent>
       <DialogActions>

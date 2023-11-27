@@ -20,7 +20,7 @@ import { Controller } from "react-hook-form";
 import { LoanApplicationFormType } from "../../utility/types";
 import LoanSummary from "../LoanSummary";
 import { useStyles } from "../../theme";
-import { formatLoanSummaryData } from '../../utility';
+import { formatLoanSummaryData } from "../../utility";
 const LoanApplicationForm = ({
   open,
   handleClose,
@@ -253,7 +253,11 @@ const LoanApplicationForm = ({
                   </FormControl>
                 </Grid>
               </Grid>
-              <LoanSummary showTitle={true} title="Loan Details" fields={formatLoanSummaryData({...calculatedLoanSummary})} />
+              <LoanSummary
+                showTitle={true}
+                title="Loan Details"
+                fields={formatLoanSummaryData({ ...calculatedLoanSummary })}
+              />
             </>
           </DialogContent>
 

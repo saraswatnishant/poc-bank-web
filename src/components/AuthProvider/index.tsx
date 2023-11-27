@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { role } = useContext(UserContext);
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(
-    checkUserLoggedIn(role)
+    checkUserLoggedIn(role),
   );
 
   useEffect(() => {

@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import { AuthContext } from './index';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from "react";
+import { AuthContext } from "./index";
+import { useNavigate } from "react-router-dom";
 
 interface WithPermissionGateProps {
   // Add any additional props that your wrapped component might need
 }
 
 const withPermissionGate = <P extends WithPermissionGateProps>(
-  WrappedComponent: React.ComponentType<P>
+  WrappedComponent: React.ComponentType<P>,
 ) => {
   return (props: P) => {
     const { isAuthenticated } = useContext(AuthContext);
@@ -15,7 +15,7 @@ const withPermissionGate = <P extends WithPermissionGateProps>(
 
     // Check if authenticated, otherwise navigate to home
     if (!isAuthenticated) {
-      navigate('/');
+      navigate("/");
       return null; // Return null to prevent rendering the component
     }
 

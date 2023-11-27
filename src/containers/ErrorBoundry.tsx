@@ -25,9 +25,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (this.state.hasError) {
       return (
         <Box textAlign="center" m={3}>
-          <SentimentVeryDissatisfiedIcon
-            style={{ fontSize: 100,  }}
-          />
+          <SentimentVeryDissatisfiedIcon style={{ fontSize: 100 }} />
           <Typography variant="h5" color="error" gutterBottom>
             Oops! Something went wrong.
           </Typography>

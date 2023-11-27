@@ -43,7 +43,7 @@ const ManageLoans = ({
   const [showFullPayment, setShowFullPayment] = useState(false);
 
   const [selectedLoan, setSelectedLoan] = useState<LoanRequestType | null>(
-    null
+    null,
   );
 
   const handlePartialPaymentSubmit = async ({
@@ -221,6 +221,7 @@ const ManageLoans = ({
         full or partial payments for ultimate financial control.
       </Typography>
       <DataGrid
+        loading={loading}
         autoHeight
         sx={{
           height: "100%",

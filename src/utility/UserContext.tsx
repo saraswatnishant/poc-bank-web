@@ -6,7 +6,9 @@ export interface UserContextProps {
   };
   children?: React.ReactNode;
 }
-export const UserContext = createContext<{ role: UserRole | string }>({role: ""});
+export const UserContext = createContext<{ role: UserRole | string }>({
+  role: "",
+});
 
 export const UserContextProvider = ({ value, children }: UserContextProps) => (
   <UserContext.Provider value={value}>{children}</UserContext.Provider>

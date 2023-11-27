@@ -57,7 +57,7 @@ const LoanApplication = ({
         amount,
         startDate as Date,
         endDate as Date,
-        getValues("intrestRate")
+        getValues("intrestRate"),
       );
       setCalculatedLoanSummary(loanSummary);
     }
@@ -77,7 +77,7 @@ const LoanApplication = ({
     if (isValid) {
       const payload = prepareLoanRequestPayload(
         getValues(),
-        calculatedLoanSummary
+        calculatedLoanSummary,
       );
       const result = await requestLoan(payload);
       await fetchLoanList();

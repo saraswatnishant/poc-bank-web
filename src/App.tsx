@@ -15,7 +15,7 @@ import { LoanRequestType, AlertContentType, UserRole } from "./utility/types";
 import { UserContextProvider } from "./utility/UserContext";
 import { AuthProvider } from "./components/AuthProvider";
 import NoMatchFound from "./containers/NotFound";
-import ErrorBoundary from './containers/ErrorBoundry';
+import ErrorBoundary from "./containers/ErrorBoundry";
 const alertInitialState: AlertContentType = {
   type: "warning",
   message: "",
@@ -40,64 +40,64 @@ function App() {
   useEffect(() => {
     fetchLoanList();
   }, [fetchLoanList]);
-  
+
   return (
     <div className="App">
       <ErrorBoundary>
-      <BrowserRouter basename="/">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeProvider theme={theme}>
-            <UserContextProvider value={user}>
-              <AuthProvider>
-                <CssBaseline />
-                <Container>
-                  <Snackbar
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    open={alertContent.visible}
-                    autoHideDuration={6000}
-                    onClose={() => setAlertContent({ ...alertInitialState })}
-                  >
-                    <Alert severity={alertContent.type}>
-                      {alertContent.message}
-                    </Alert>
-                  </Snackbar>
-                  <Header />
-                  <Box>
-                    <Routes>
-                      <Route path="/" element={<Home setUser={setUser} />} />
-                      <Route
-                        path="/dashboard"
-                        element={
-                          <Dashboard
-                            loading={loading}
-                            fetchLoanList={fetchLoanList}
-                            requestLoan={requestLoan}
-                            loanList={loanList}
-                            setAlertContent={setAlertContent}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/manageloans"
-                        element={
-                          <ManageLoans
-                            fetchLoanList={fetchLoanList}
-                            loading={loading}
-                            loanList={loanList}
-                            setAlertContent={setAlertContent}
-                            updateLoan={updateLoan}
-                          />
-                        }
-                      />
-                      <Route path="*" element={<NoMatchFound />} />
-                    </Routes>
-                  </Box>
-                </Container>
-              </AuthProvider>
-            </UserContextProvider>
-          </ThemeProvider>
-        </LocalizationProvider>
-      </BrowserRouter>
+        <BrowserRouter basename="/">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+              <UserContextProvider value={user}>
+                <AuthProvider>
+                  <CssBaseline />
+                  <Container>
+                    <Snackbar
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      open={alertContent.visible}
+                      autoHideDuration={6000}
+                      onClose={() => setAlertContent({ ...alertInitialState })}
+                    >
+                      <Alert severity={alertContent.type}>
+                        {alertContent.message}
+                      </Alert>
+                    </Snackbar>
+                    <Header />
+                    <Box>
+                      <Routes>
+                        <Route path="/" element={<Home setUser={setUser} />} />
+                        <Route
+                          path="/dashboard"
+                          element={
+                            <Dashboard
+                              loading={loading}
+                              fetchLoanList={fetchLoanList}
+                              requestLoan={requestLoan}
+                              loanList={loanList}
+                              setAlertContent={setAlertContent}
+                            />
+                          }
+                        />
+                        <Route
+                          path="/manageloans"
+                          element={
+                            <ManageLoans
+                              fetchLoanList={fetchLoanList}
+                              loading={loading}
+                              loanList={loanList}
+                              setAlertContent={setAlertContent}
+                              updateLoan={updateLoan}
+                            />
+                          }
+                        />
+                        <Route path="*" element={<NoMatchFound />} />
+                      </Routes>
+                    </Box>
+                  </Container>
+                </AuthProvider>
+              </UserContextProvider>
+            </ThemeProvider>
+          </LocalizationProvider>
+        </BrowserRouter>
       </ErrorBoundary>
     </div>
   );

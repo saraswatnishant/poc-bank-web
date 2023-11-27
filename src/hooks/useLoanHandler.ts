@@ -37,7 +37,7 @@ const useLoanHandler = () => {
     return result;
   }, []);
 
-  const updateLoan =  useCallback(async (payload: LoanRequestType) => {
+  const updateLoan = useCallback(async (payload: LoanRequestType) => {
     setLoading(true);
     let isSuccess = true;
     try {
@@ -54,7 +54,7 @@ const useLoanHandler = () => {
     requestLoan,
     loading,
     fetchLoans,
-    updateLoan
+    updateLoan,
   };
 };
 

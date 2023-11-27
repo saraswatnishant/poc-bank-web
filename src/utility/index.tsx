@@ -35,7 +35,7 @@ export const calculateLoan = (
   amount: number,
   startDate: Date,
   endDate: Date,
-  intrestRate: number
+  intrestRate: number,
 ) => {
   const decimalInterestRate = intrestRate / 100;
   // Parse start and end dates
@@ -45,7 +45,7 @@ export const calculateLoan = (
   const duration = end.diff(start, "years", true);
 
   const totalAmount = +(amount * (1 + decimalInterestRate * duration)).toFixed(
-    2
+    2,
   );
   const totalInterest = +(totalAmount - amount).toFixed(2);
 
@@ -77,7 +77,7 @@ export const prepareLoanRequestPayload = (
     loanType,
     currency,
   }: FormInputTypes,
-  { totalAmount, totalInterest, tenure }: LoanSummaryType
+  { totalAmount, totalInterest, tenure }: LoanSummaryType,
 ): Partial<LoanRequestType> => {
   return {
     amount: Number(amount),
@@ -173,8 +173,8 @@ export const manageLoanTableCols: GridColDef[] = [
             value === "APPROVED"
               ? "success"
               : value === "PENDING"
-              ? "warning"
-              : "error"
+                ? "warning"
+                : "error"
           }
         />
       );
