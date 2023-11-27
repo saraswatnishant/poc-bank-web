@@ -37,20 +37,7 @@ const useLoanHandler = () => {
     return result;
   }, []);
 
-  const madePartialPayment =  useCallback(async (payload: LoanRequestType) => {
-    setLoading(true);
-    let isSuccess = true;
-    try {
-      return await instance.put(`/api/v1/loan/${payload.id}`, payload);
-    } catch (ex) {
-      isSuccess = false;
-    } finally {
-      setLoading(false);
-    }
-    return isSuccess;
-  }, []);
-
-  const madeFullPayment =  useCallback(async (payload: LoanRequestType) => {
+  const updateLoan =  useCallback(async (payload: LoanRequestType) => {
     setLoading(true);
     let isSuccess = true;
     try {
@@ -67,8 +54,7 @@ const useLoanHandler = () => {
     requestLoan,
     loading,
     fetchLoans,
-    madePartialPayment,
-    madeFullPayment
+    updateLoan
   };
 };
 

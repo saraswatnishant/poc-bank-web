@@ -1,5 +1,5 @@
 import moment, { Moment } from "moment";
-import { LoanRequestType, FormInputTypes, LoanSummaryType } from "./types";
+import { LoanRequestType, FormInputTypes, LoanSummaryType, UserRole } from "./types";
 import "moment-precise-range-plugin";
 import {
   GridRenderCellParams,

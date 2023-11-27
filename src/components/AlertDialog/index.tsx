@@ -1,23 +1,38 @@
 import * as React from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { AlertDialogType } from '../../utility/types';
+import { AlertDialogType } from "../../utility/types";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const AlertDialog = ({
-    open,
-    title,
-    body,
-    okButtonText,
-    closeButtonText,
-    handleClose,
-    handleConfirm
+  open,
+  title,
+  body,
+  okButtonText,
+  closeButtonText,
+  handleClose,
+  handleConfirm,
+  loading,
 }: AlertDialogType) => {
+  const [closeLoading, setCloseLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+
+  const handleConfirmClick = async () => {
+    setConfirmLoading(true);
+    await handleConfirm();
+    setConfirmLoading(false);
+  };
+
+  const handleCloseClick = async () => {
+    setCloseLoading(true);
+    await handleClose();
+    setCloseLoading(false);
+  };
 
   return (
     <React.Fragment>
@@ -34,14 +49,20 @@ const AlertDialog = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}> { closeButtonText }</Button>
-          <Button onClick={handleConfirm} autoFocus>
-            { okButtonText }
-          </Button>
+          <LoadingButton loading={closeLoading} onClick={handleCloseClick}>
+            {closeButtonText}
+          </LoadingButton>
+          <LoadingButton
+            loading={confirmLoading}
+            onClick={handleConfirmClick}
+            autoFocus
+          >
+            {okButtonText}
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </React.Fragment>
   );
-}
+};
 
 export default AlertDialog;

@@ -2,7 +2,12 @@ import { Dispatch, SetStateAction } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { AlertColor } from "@mui/material";
 
+export type UserRole = 'Banker' | 'Applicant';
 
+export type STATUS = "PENDING" | "APPROVED" | "REJECTED" | "CLOSED";
+export interface HeaderProps {
+  setUser: Dispatch<SetStateAction<{role: UserRole | string }>>;
+}
 export interface ActionBarType {
   value: string;
   tabs: {name: string; value: string}[];
@@ -59,7 +64,7 @@ export interface LoanSummaryType {
 export interface LoanRequestType extends FormInputTypes, LoanSummaryType {
   id?: string;
   paymentMade: number;
-  status: "PENDING" | "APPROVED" | "REJECTED" | "CLOSED";
+  status: STATUS;
 }
 
 export interface AlertDialogType {
@@ -70,6 +75,7 @@ export interface AlertDialogType {
   handleClose: () => void;
   handleConfirm: () => void;
   open: boolean;
+  loading?:boolean;
 }
 
 export interface AlertContentType {
@@ -90,8 +96,7 @@ export interface ManageLoansPropsType {
   loading: boolean;
   fetchLoanList: () => void;
   loanList: LoanRequestType[];
-  madePartialPayment: (payload: LoanRequestType) => {};
-  madeFullPayment:  (payload: LoanRequestType) => {};
+  updateLoan: (payload: LoanRequestType) => {};
   setAlertContent: Dispatch<SetStateAction<AlertContentType>>;
 }
 
@@ -115,4 +120,8 @@ export interface LoanSettlementDialogType {
   handleFullPaymentSubmit: () => void;
   selectedLoan: LoanRequestType | null;
   loading: boolean;
+}
+
+export interface HomeComponentType {
+  setUser: Dispatch<SetStateAction<{role: UserRole | string }>>;
 }

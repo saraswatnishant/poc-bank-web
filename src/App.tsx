@@ -7,11 +7,14 @@ import { Container, Box, Snackbar, Alert } from "@mui/material";
 import Dashboard from "./containers/Dashboard";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ManageLoans from "./containers/ManageLoans";
+import Home from "./containers/Home";
 import useLoanHandler from "./hooks/useLoanHandler";
-import { LoanRequestType, AlertContentType } from "./utility/types";
-
+import { LoanRequestType, AlertContentType, UserRole } from "./utility/types";
+import { UserContextProvider } from "./utility/UserContext";
+import { AuthProvider } from "./components/AuthProvider";
+import NoMatchFound from "./containers/NotFound";
 const alertInitialState: AlertContentType = {
   type: "warning",
   message: "",
@@ -19,12 +22,14 @@ const alertInitialState: AlertContentType = {
 };
 
 function App() {
+  const [user, setUser] = useState<{ role: UserRole | string }>({
+    role: "",
+  });
   const [alertContent, setAlertContent] = useState<AlertContentType>({
     ...alertInitialState,
   });
   const [loanList, setLoanList] = useState<LoanRequestType[]>([]);
-  const { fetchLoans, requestLoan, madePartialPayment, madeFullPayment,  loading } =
-    useLoanHandler();
+  const { fetchLoans, requestLoan, updateLoan, loading } = useLoanHandler();
 
   const fetchLoanList = useCallback(async () => {
     const result = await fetchLoans();
@@ -37,60 +42,60 @@ function App() {
 
   return (
     <div className="App">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter basename="/">
-            <CssBaseline />
-            <Container>
-              <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                open={alertContent.visible}
-                autoHideDuration={6000}
-                onClose={() => setAlertContent({ ...alertInitialState })}
-              >
-                <Alert severity={alertContent.type}>
-                  {alertContent.message}
-                </Alert>
-              </Snackbar>
-              <Header />
-              <Box>
-                <Routes>
-                  <Route path="/" element={<Navigate to="/dashboard" />} />
-                  <Route
-                    path="/dashboard"
-                    element={
-                      <>
-                        <Dashboard
-                          loading={loading}
-                          fetchLoanList={fetchLoanList}
-                          requestLoan={requestLoan}
-                          loanList={loanList}
-                          setAlertContent={setAlertContent}
-                        />
-                      </>
-                    }
-                  />
-                  <Route
-                    path="/manageloans"
-                    element={
-                      <>
-                        <ManageLoans
-                          fetchLoanList={fetchLoanList}
-                          loading={loading}
-                          loanList={loanList}
-                          madePartialPayment={madePartialPayment}
-                          setAlertContent={setAlertContent}
-                          madeFullPayment={madeFullPayment}
-                        />
-                      </>
-                    }
-                  />
-                </Routes>
-              </Box>
-            </Container>
-          </BrowserRouter>
-        </ThemeProvider>
-      </LocalizationProvider>
+      <BrowserRouter basename="/">
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeProvider theme={theme}>
+            <UserContextProvider value={user}>
+              <AuthProvider>
+                <CssBaseline />
+                <Container>
+                  <Snackbar
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={alertContent.visible}
+                    autoHideDuration={6000}
+                    onClose={() => setAlertContent({ ...alertInitialState })}
+                  >
+                    <Alert severity={alertContent.type}>
+                      {alertContent.message}
+                    </Alert>
+                  </Snackbar>
+                  <Header />
+                  <Box>
+                    <Routes>
+                      <Route path="/" element={<Home setUser={setUser} />} />
+                      <Route
+                        path="/dashboard"
+                        element={
+                          <Dashboard
+                            loading={loading}
+                            fetchLoanList={fetchLoanList}
+                            requestLoan={requestLoan}
+                            loanList={loanList}
+                            setAlertContent={setAlertContent}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/manageloans"
+                        element={
+                          <ManageLoans
+                            fetchLoanList={fetchLoanList}
+                            loading={loading}
+                            loanList={loanList}
+                            setAlertContent={setAlertContent}
+                            updateLoan={updateLoan}
+                          />
+                        }
+                      />
+                      <Route path="*" element={<NoMatchFound />} />
+                    </Routes>
+                  </Box>
+                </Container>
+              </AuthProvider>
+            </UserContextProvider>
+          </ThemeProvider>
+        </LocalizationProvider>
+      </BrowserRouter>
     </div>
   );
 }

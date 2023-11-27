@@ -1,25 +1,34 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Typography, Stack, Button, IconButton, Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { ManageLoansPropsType, LoanRequestType } from "../utility/types";
+import {
+  ManageLoansPropsType,
+  LoanRequestType,
+  STATUS,
+} from "../utility/types";
 import { manageLoanTableCols as columns } from "../utility";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PaymentIcon from "@mui/icons-material/Payment";
+import TaskIcon from "@mui/icons-material/Task";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import PartialPayment from "../components/PartialPayment";
 import LoanSummaryDialog from "../components/LoanSummaryDialog";
 import LoanSettlementDialog from "../components/LoanSettlementDialog";
-import { useStyles } from '../theme/index';
+import AlertDialog from "../components/AlertDialog";
+import { useStyles } from "../theme/index";
+import withPermissionGate from "../components/AuthProvider/withPermissionGate";
+import { UserContext } from "../utility/UserContext";
 const ManageLoans = ({
   loanList = [],
-  madePartialPayment,
   setAlertContent,
   fetchLoanList,
+  updateLoan,
   loading,
-  madeFullPayment,
 }: ManageLoansPropsType) => {
+  const { role } = useContext(UserContext);
   const [showLoanSummary, setShowLoanSummary] = useState(false);
+  const [showLoanApprovalDialog, setShowLoanApprovalDialog] = useState(false);
   const [showPartialPayment, setShowPartialPayment] = useState(false);
   const [showFullPayment, setShowFullPayment] = useState(false);
 
@@ -41,7 +50,7 @@ const ManageLoans = ({
       ...selectedLoan,
       paymentMade: selectedLoan.paymentMade + Number(payment),
     };
-    const success = await madePartialPayment(payload as LoanRequestType);
+    const success = await updateLoan(payload as LoanRequestType);
 
     fetchLoanList();
     setShowPartialPayment(false);
@@ -68,7 +77,7 @@ const ManageLoans = ({
       paymentMade: selectedLoan.totalAmount,
       status: "CLOSED",
     };
-    const success = await madePartialPayment(payload as LoanRequestType);
+    const success = await updateLoan(payload as LoanRequestType);
 
     fetchLoanList();
     setShowFullPayment(false);
@@ -96,6 +105,33 @@ const ManageLoans = ({
     setSelectedLoan(null);
   };
 
+  const handleLoanApprovalSubmit = async (status: STATUS) => {
+    if (!selectedLoan) {
+      return;
+    }
+    const payload = {
+      ...selectedLoan,
+      paymentMade: 0,
+      status: status,
+    };
+    const success = await updateLoan(payload as LoanRequestType);
+
+    fetchLoanList();
+    setShowLoanApprovalDialog(false);
+    setSelectedLoan(null);
+    success
+      ? setAlertContent({
+          type: "success",
+          message: `Loan request is ${status} successfully.`,
+          visible: true,
+        })
+      : setAlertContent({
+          type: "error",
+          message: "Something went wrong, please try again.",
+          visible: true,
+        });
+  };
+
   const actionColumn: GridColDef = {
     field: "action",
     headerName: "Action",
@@ -116,30 +152,48 @@ const ManageLoans = ({
           >
             <VisibilityIcon color="primary" />
           </IconButton>
-          <Button
-            disabled={row.status !== "APPROVED"}
-            variant="outlined"
-            startIcon={<PaymentIcon />}
-            size="small"
-            onClick={() => {
-              setShowPartialPayment(true);
-              setSelectedLoan({ ...row });
-            }}
-          >
-            Partial Payment
-          </Button>
-          <Button
-            disabled={row.status !== "APPROVED"}
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              setSelectedLoan({ ...row });
-              setShowFullPayment(true);
-            }}
-            startIcon={<CreditScoreIcon />}
-          >
-            Full Payment
-          </Button>
+          {role === "Applicant" && (
+            <>
+              <Button
+                disabled={row.status !== "APPROVED"}
+                variant="outlined"
+                startIcon={<PaymentIcon />}
+                size="small"
+                onClick={() => {
+                  setShowPartialPayment(true);
+                  setSelectedLoan({ ...row });
+                }}
+              >
+                Partial Payment
+              </Button>
+              <Button
+                disabled={row.status !== "APPROVED"}
+                variant="outlined"
+                size="small"
+                onClick={() => {
+                  setSelectedLoan({ ...row });
+                  setShowFullPayment(true);
+                }}
+                startIcon={<CreditScoreIcon />}
+              >
+                Full Payment
+              </Button>
+            </>
+          )}
+          {role === "Banker" && (
+            <Button
+              disabled={row.status !== "PENDING"}
+              variant="outlined"
+              size="small"
+              onClick={() => {
+                setSelectedLoan({ ...row });
+                setShowLoanApprovalDialog(true);
+              }}
+              startIcon={<TaskIcon />}
+            >
+              Approve
+            </Button>
+          )}
         </Stack>
       );
     },
@@ -158,7 +212,7 @@ const ManageLoans = ({
         sx={{
           height: "100%",
           overflowX: "scroll",
-          mt: "8px"
+          mt: "8px",
         }}
         className={classes.dataGrid}
         rows={loanList}
@@ -186,8 +240,18 @@ const ManageLoans = ({
         handleFullPaymentSubmit={handleFullPaymentSubmit}
         loading={loading}
       />
+      <AlertDialog
+        open={showLoanApprovalDialog}
+        title="Confirmation ?"
+        body="Are you sure you want to approve this loan request?        "
+        okButtonText="Approve"
+        closeButtonText="Reject"
+        handleClose={() => handleLoanApprovalSubmit("REJECTED")}
+        handleConfirm={() => handleLoanApprovalSubmit("APPROVED")}
+        loading={loading}
+      />
     </Box>
   );
 };
 
-export default ManageLoans;
+export default withPermissionGate(ManageLoans);

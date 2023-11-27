@@ -5,12 +5,16 @@ import LoadWidgetSummary from "../components/LoadWidgetSummary";
 import LoanApplication from "./LoanApplication";
 import InstanLoanImg from "../assets/instant-loan.jpg";
 import { DashboardPropsType, LoanRequestType } from "../utility/types";
+import withPermissionGate from "../components/AuthProvider/withPermissionGate";
 
-
-const Dashboard = ({requestLoan, fetchLoanList, loading, loanList, setAlertContent } : DashboardPropsType ) => {
+const Dashboard = ({
+  requestLoan,
+  fetchLoanList,
+  loading,
+  loanList,
+  setAlertContent,
+}: DashboardPropsType) => {
   const [showApplyLoan, setShowApplyLoan] = useState(false);
- 
-
   const loadWidgetMetrices = useMemo(() => {
     const metrices = {
       totalAmount: 0,
@@ -18,14 +22,16 @@ const Dashboard = ({requestLoan, fetchLoanList, loading, loanList, setAlertConte
       totalActiveLoans: 0,
       totalPendingLoans: 0,
     };
-    loanList.forEach(({ totalAmount, paymentMade, status }: LoanRequestType) => {
-      if (status === "APPROVED") {
-        metrices.totalAmount += totalAmount;
-        metrices.totalPendingAmount += totalAmount - paymentMade;
-        metrices.totalActiveLoans += 1;
+    loanList.forEach(
+      ({ totalAmount, paymentMade, status }: LoanRequestType) => {
+        if (status === "APPROVED") {
+          metrices.totalAmount += totalAmount;
+          metrices.totalPendingAmount += totalAmount - paymentMade;
+          metrices.totalActiveLoans += 1;
+        }
+        metrices.totalPendingLoans += status === "PENDING" ? 1 : 0;
       }
-      metrices.totalPendingLoans += status === "PENDING" ? 1 : 0;
-    });
+    );
 
     return metrices;
   }, [loanList]);
@@ -89,4 +95,4 @@ const Dashboard = ({requestLoan, fetchLoanList, loading, loanList, setAlertConte
   );
 };
 
-export default Dashboard;
+export default withPermissionGate(Dashboard);
